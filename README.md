@@ -237,4 +237,133 @@ a
 cap.release()
 cv2.destroyAllWindows()
 ```
+7.
+# Datetime Module
+ Datetime module supplies classes to work with date and time. These classes provide a number of functions to deal with dates, times and time intervals. Date and datetime are an object in Python, so when you manipulate them, you are actually manipulating objects and not string or timestamps.
+
+The datetime classes are categorize into 6 main classes –
+
+
+
+- date :
+An idealized naive date, assuming the current Gregorian calendar always was, and always will be, in effect. Its attributes are year, month and day.
+- time :
+An idealized time, independent of any particular day, assuming that every day has exactly 24*60*60 seconds. Its attributes are hour, minute, second, microsecond, and tzinfo.
+- datetime :
+Its a combination of date and time along with the attributes year, month, day, hour, minute, second, microsecond, and tzinfo.
+- timedelta :
+A duration expressing the difference between two date, time, or datetime instances to microsecond resolution.
+- tzinfo :
+It provides time zone information objects.
+- timezone :
+A class that implements the tzinfo abstract base class as a fixed offset from the UTC (New in version 3.2).
+
+
+[Datetime module examples](https://www.geeksforgeeks.org/python-datetime-module-with-examples/)
+
+
+
+```
+import cv2
+import datetime                                                                # datetime package is imported 
+cap = cv2.VideoCapture(0)
+print(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
+print(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
+#cap.set(3, 3000)
+#cap.set(4, 3000)
+#print(cap.get(3))
+#print(cap.get(4))
+while(cap.isOpened()):
+    ret, frame = cap.read()
+    if ret == True:
+
+       font = cv2.FONT_HERSHEY_SIMPLEX
+       text = 'Width: '+ str(cap.get(3)) + ' Height:' + str(cap.get(4))         # str() : converts the passed data into a string data
+                                                                                # str() is used since cap.get() returns an integer value
+       datet = str(datetime.datetime.now())                                     # current date & time is stored in this variable
+       frame = cv2.putText(frame, text, (10, 50), font, 1,
+                           (0, 255, 255), 2, cv2.LINE_AA)
+       frame = cv2.putText(frame, datet, (10, 100), font, 1,
+                           (0, 255, 255), 2, cv2.LINE_AA)
+       cv2.imshow('frame', frame)
+
+       if cv2.waitKey(1) & 0xFF == ord('q'):
+         break
+    else:
+        break
+
+cap.release()
+cv2.destroyAllWindows()
+```
+8.
+```python
+import numpy as np                                                        #importing numpy package as np
+import cv2                                                                #importing OpenCv package as cv2
+
+#events = [i for i in dir(cv2) if 'EVENT' in  i]                          #Getting the list of all the fucntions/Classes whoose name have the word "EVENT"
+#print(events)                                                            #Printing the list
+
+def click_event(event, x, y, flags, param):                               #Creating the function click_event
+    if event == cv2.EVENT_LBUTTONDOWN:                                    #if we click Left Button then it will enter this block
+        print(x,', ' ,y)
+        font = cv2.FONT_HERSHEY_SIMPLEX
+        strXY = str(x) + ', '+ str(y)                                     #strXY will contain the x,y coordinates of where we had clicked the left Button
+        cv2.putText(img, strXY, (x, y), font, .5, (255, 255, 0), 2)       #Put the text-"strXY" into the image-"img" at the location-(x,y)having font size-0.5 with the colour having BGR colour-(255,255,0) having line thickness 2
+        cv2.imshow('image', img)                                          #Showing the image after putting the text
+    if event == cv2.EVENT_RBUTTONDOWN:                                    #If we click the right button then we will enter this block
+        blue = img[y, x, 0]                                               #We will get the Blue value at the point where we had clicked
+        green = img[y, x, 1]                                              #We will get the Green value at the point where we had clicked
+        red = img[y, x, 2]                                                #We will get the Red value at the point where we had clicked
+        font = cv2.FONT_HERSHEY_SIMPLEX
+        strBGR = str(blue) + ', '+ str(green)+ ', '+ str(red)             #Storing BGR value at the point where we have right clicked in strBGR
+        cv2.putText(img, strBGR, (x, y), font, .5, (0, 255, 255), 2)      #Put the text-"strBGR" into the image-"img" at the location-(x,y)having font size-0.5 with the colour having BGR colour-(255,255,0) having line thickness 2  
+        cv2.imshow('image', img)                                          #Showing the image
+
+#img = np.zeros((512, 512, 3), np.uint8)                                  #Creating image-"img" of size 512 by 512 having data type uint8 in which the values of all the pixels is 0 i.e creating a full black image
+img = cv2.imread('lena.jpg')                                              #Storing image-"lena.jpg" in img
+cv2.imshow('image', img)                                                  #Showing the image-"img"
+
+cv2.setMouseCallback('image', click_event)                                #If we press any Mouse key then this function will be called and the event,(x,y) coordinates of the mouse clicked will be passed to the function click_event
+
+cv2.waitKey(0)                                                            #To show the image for an infinte time
+cv2.destroyAllWindows()                                                   #Destroying all the windows
+
+
+```
+9.
+
+```python
+import cv2
+import numpy as np
+
+#run one function at a time or change names and call seperately
+
+def click_event(event, x, y, flags, param):                 #fuction to make a small circle on every left click and join the two points
+    if event== cv2.EVENT_LBUTTONDOWN:                       #check if left click
+        cv2.circle(img, (x, y), 5, (0, 0, 255), -1)         #draw a circle on the point of click
+        points.append((x, y))                               #add the point to an array 
+        if len(points) >=2:                                 #just to make sure atleast two points are there to draw a line
+            cv2.line(img, points[-1], points[-2], (255, 0, 0), 5)   #draw line joining the last two clicks
+        cv2.imshow('image', img)                            #showing image in a window named image
+
+def click_event(event, x, y, flags, param):                 #function to open a new window with the same color as of the point clicked
+    if event== cv2.EVENT_LBUTTONDOWN:                       #check if left click
+        blue = img[x, y, 0]                                 #
+        green = img[x, y, 1]                                #
+        red = img[x, y, 2]                                  #
+        mycolorImage = np.zeros((512,512,3), np.uint8)      #creating a new window
+
+        mycolorImage[:] = [blue, green, red]                #assigning color to the new window
+        cv2.imshow('color', mycolorImage)                   #showing the new window
+
+#img = np.zeros((512,512,3), np.uint8)                      #to open a black window
+img = cv2.imread('lena.jpg',-1)                             #to open the image lena
+cv2.imshow('image', img)                                    #showing the image 
+points = []                                                 #the empty array points, points will be append to it on each click
+
+cv2.setMouseCallback('image', click_event)                  #        
+cv2.waitKey(0) & 0xFF                                       #
+cv2.destroyAllWindows()                                     #
+```
+10.
 
