@@ -6,7 +6,7 @@ Digital images are typically stored in a matrix. PPI - pixel per inch. Computer 
 ### Numpy: 
 NumPy is the fundamental package for scientific computing with Python. It contains among other things: a powerful N-dimensional array object, sophisticated (broadcasting) functions, tools for integrating C/C++ and Fortran code, useful linear algebra, Fourier transform, and random number capabilities.
 
-## How to read display and save videos using cameras:
+# 4. How to read display and save videos using cameras:
 ```python
 import cv2
 
@@ -156,7 +156,7 @@ while(cap.isOpened()):   #If the file name of the video we want to provide is co
 ##### NOTE
 Here video will be saved in BGR mode because argument of out.write is frame which is coloured but appearing video will be in a gray mode 
 
-# How to draw geometric shapes on images using Python OpenCV
+# 5. How to draw geometric shapes on images using Python OpenCV
 
 ```python
 import numpy as np
@@ -207,7 +207,7 @@ cv2.imshow('image',img) #shows an image into a window
 cv2.waitKey(0) #wait for closing event
 cv2.destroyAllWindows() #destorys all the windows
 ``` 
-6.
+# 6.
 ```
 import cv2
 cap = cv2.VideoCapture(0)
@@ -237,8 +237,7 @@ a
 cap.release()
 cv2.destroyAllWindows()
 ```
-7.
-# Datetime Module
+# 7. Datetime Module
  Datetime module supplies classes to work with date and time. These classes provide a number of functions to deal with dates, times and time intervals. Date and datetime are an object in Python, so when you manipulate them, you are actually manipulating objects and not string or timestamps.
 
 The datetime classes are categorize into 6 main classes –
@@ -295,7 +294,7 @@ while(cap.isOpened()):
 cap.release()
 cv2.destroyAllWindows()
 ```
-8.
+# 8.
 ```python
 import numpy as np                                                        #importing numpy package as np
 import cv2                                                                #importing OpenCv package as cv2
@@ -330,7 +329,7 @@ cv2.destroyAllWindows()                                                   #Destr
 
 
 ```
-9.
+# 9.
 
 ```python
 import cv2
@@ -365,7 +364,7 @@ cv2.setMouseCallback('image', click_event)                  #
 cv2.waitKey(0) & 0xFF                                       #
 cv2.destroyAllWindows()                                     #
 ```
-10.
+# 10.
 ```python
 import numpy as np
 import cv2
@@ -401,9 +400,7 @@ cv2.imshow('weighted addition',dst2)
 cv2.waitKey(0)
 cv2.destroyAllWindows()
 ```
-11.
-
-# Bitwise operations
+# 11. Bitwise operations
 
 Bitwise operations can be useful when working with masks. Masks are binary images that indicates pixel in which an operation is to be performed.
 
@@ -433,7 +430,7 @@ cv2.waitKey(0)
 cv2.destroyAllWindows()
 
 ```
-12.
+# 12.
 ```python
 import numpy as np                                          #importing numpy package as np
 import cv2 as cv                                            #importing OpenCv package cv2 as cv
@@ -471,8 +468,7 @@ while(1):                                                   #infinite loop
 
 cv.destroyAllWindows()                                      #To destroy all the windows created
 ```
-13.
-# Object Detection and Object Tracking Using HSV Color Space
+# 13. Object Detection and Object Tracking Using HSV Color Space
 
 ## HSV->
 
@@ -593,8 +589,7 @@ cv2.destroyAllWindows()
 
 [youtube video](https://www.youtube.com/watch?v=3D7O_kZi8-o&list=PLS1QulWo1RIa7D1O6skqDQ-JZ1GGHKK-K&index=14)
 
-14.
-# Simple Image Thresholding
+# 14. Simple Image Thresholding
 Thresholding is a popular segmentation technique used for separating an object from its background.Process of thresholding involves comparing each pixel of an image with a predefined threshold value.
 
 First output of threshold is ret but here we have written _ because we won't be using this variable anywhere.
@@ -636,8 +631,7 @@ cv.waitKey(0)
 cv.destroyAllWindows()
 
 ```
-15.
-# ADAPTIVE THRESHOLDING
+# 15. ADAPTIVE THRESHOLDING
 
 In **simple thresholding**, the threshold value is **global**, i.e., it is same for all the pixels in the image. **Adaptive thresholding is the method where the threshold value is calculated for smaller regions and therefore, there will be different threshold values for different regions.**
 
@@ -691,7 +685,7 @@ cv.destroyAllWindows()
 
 - [tutorialspoint](https://www.tutorialspoint.com/opencv/opencv_adaptive_threshold.htm)
 - [youtube video](https://www.youtube.com/watch?v=Zf1F4cz8GHU&list=PLS1QulWo1RIa7D1O6skqDQ-JZ1GGHKK-K&index=17)
-16.
+# 16.
 ```python
 import cv2
 from matplotlib import pyplot as plt
@@ -738,8 +732,7 @@ for i in range(6):
 
 plt.show()
 ```
-17.
-## Morphological Transformation
+# 17. Morphological Transformation
 ```Python
 
 import cv2                                                                           
@@ -767,7 +760,7 @@ for i in range(8):                                                              
 
 plt.show()
 ```
-18.
+# 18.
 
 ``` python
 import cv2
@@ -802,8 +795,8 @@ for i in range(6):
 plt.show()
 ```
 [sigmacolour and sigmaspace](https://docs.opencv.org/2.4/modules/imgproc/doc/filtering.html?highlight=bilateralfilter#bilateralfilter)
-19.
-# Image Gradients and Edge Detection 
+
+# 19. Image Gradients and Edge Detection 
 ```Python
 #Code for image gradient and Edge detection
 #Image Gradient is directional change the intensity or color in an image
@@ -851,8 +844,7 @@ plt.show()                                         #displaying of images
 #we can also include kernel size in sobelx and sobely method.
 #increasing kernel size in Laplacian gradient deteriorates edge detection result.
 ```
-20.
-# Canny Edge Detector
+# 20. Canny Edge Detector
 The Canny edge detector is used to detect multiple edges in an image (using multi-stage algorithm). Canny Edge detection gives more precise edges and reduces noise as compared to Laplacian or Sobel method. The algorithm is mainly gray-scale. 
 The detection algorithm is of essentially 5 steps.
 
@@ -900,8 +892,7 @@ for i in range(2):
     plt.title(titles[i])
     plt.xticks([]), plt.yticks([])
 ```
-21.
-# Image Pyramids
+# 21. Image Pyramids
 
 **Pyramid**, or **pyramid representation**, is a type of multi-scale signal representation developed by the computer vision, image processing and signal processing communities, in which a signal or an image is subject to repeated **smoothing** and **subsampling**. Pyramid representation is a predecessor to **scale-space representation** and **multiresolution analysis**. With Image pyramids, we can create images with different resolutions.
 
@@ -944,8 +935,7 @@ cv2.imshow("Original image", img)                                               
 cv2.waitKey(0)
 cv2.destroyAllWindows()
 ```
-22.
-# Image Blending using Pyramids
+# 22. Image Blending using Pyramids
 
 One application of Pyramids is Image Blending. For example, in image stitching, you will need to stack two images together, but it may not look good due to discontinuities between images. In that case, image blending with Pyramids gives you seamless blending without leaving much data in the images. One classical example of this is the blending of two fruits, Orange and Apple.
 
@@ -1020,7 +1010,7 @@ cv2.imshow("apple_orange_reconstruct", apple_orange_reconstruct)                
 cv2.waitKey(0)
 cv2.destroyAllWindows()
 ```
-23.
+# 23.
 Contours are defined as the line joining all the points along the boundary of an image that are having the same intensity.
 OpenCV has _findContour()_ function that helps in extracting the contours from the image. It works best on binary images, so we should first apply thresholding techniques, Sobel edges, etc.
 The function returns a Python list of all the contours in the image. Each individual contour is a Numpy array of (x, y) coordinates of boundary points of the object.
@@ -1054,8 +1044,7 @@ cv2.imshow('Image GRAY', imgray)
 cv2.waitKey(0)
 cv2.destroyAllWindows()
 ```
-24.
-# Detect Simple Geometric Shapes
+# 24. Detect Simple Geometric Shapes
 
 ## Goal
 
@@ -1186,7 +1175,7 @@ cv2.destroyAllWindows()
 
 * [YouTube Video](https://youtu.be/mVWQNeY1Pb4)
 * [Structural Analysis and Shape Descriptors](https://docs.opencv.org/2.4/modules/imgproc/doc/structural_analysis_and_shape_descriptors.html#approxpolydp)
-26.
+# 26.
 
 ~~~python
 import numpy as np
@@ -1220,8 +1209,7 @@ cv2.destroyAllWindows()
 
 
 ~~~
-27.
-# Template Matching Using OpenCV
+# 27. Template Matching Using OpenCV
 ```Python
 #code for template matching using opencv
 #Template matching is searching and finding location of template image in original reference image
@@ -1268,9 +1256,7 @@ cv2.destroyAllWindows()
 #Other than 'cv2.TM_CCORR_NORMED ' method ,there are another template matching methods also.
 
 ```
-28.
-
-# HOUGH TRANSFORM
+# 28. HOUGH TRANSFORM
 
 Hough Transform is basically a feature extraction technique used in image analysis, computer vision and digital image processing. The aim is to find instances (though imperfect) of objects within a certian class of shapes governed by some sort of voting procedure. 
 
@@ -1312,9 +1298,7 @@ The polar form is preferred over the cartesian form because of the fact that for
 
 * [Wikipedia](https://en.wikipedia.org/wiki/Hough_transform)
 * [Youtube Video](https://www.youtube.com/watch?v=7m-RVJ6ABsY&list=PLS1QulWo1RIa7D1O6skqDQ-JZ1GGHKK-K&index=32)
-29.
-
-# Hough Line Transform
+# 29. Hough Line Transform
 
 ## Goal
 
@@ -1392,9 +1376,7 @@ cv.destroyAllWindows()						# Closing all the windows and terminate the program
 
 * [OpenCV Docs](https://docs.opencv.org/3.4/d9/db0/tutorial_hough_lines.html)
 * [Youtube Video](https://www.youtube.com/watch?v=gbL3XKOiBvw&list=PLS1QulWo1RIa7D1O6skqDQ-JZ1GGHKK-K&index=33)
-30.
-
-# Probabilistic Hough Line Transform
+# 30. Probabilistic Hough Line Transform
 
 ## Goal
 
@@ -1472,8 +1454,7 @@ cv.destroyAllWindows()				        # All the windows are destroyed and the progra
 
 * [Youtube Video](https://www.youtube.com/watch?v=rVBVqVmHtfc&list=PLS1QulWo1RIa7D1O6skqDQ-JZ1GGHKK-K&index=34)
 * [OpenCV Doc](https://docs.opencv.org/3.4/d9/db0/tutorial_hough_lines.html)
-31.
-# Road Lane Detection - 1
+# 31. Road Lane Detection - 1
 ##### Reference : [https://www.youtube.com/watch?v=yvfI4p6Wyvk](https://www.youtube.com/watch?v=yvfI4p6Wyvk)
 _________________________________________________________________________________________________________________________________________
 ### Aim : To narrow our field of view to our Region of Interest (ROI)
@@ -1514,10 +1495,8 @@ cropped_image = region_of_interest(image, np.array([region_of_interest_vertices]
                                                 #we specify the data type to prevent misunderstandings...
 plt.imshow(cropped_image)
 plt.show()
-```
 _____________________________________________________________________________________________________________________________________
-32.
-# Road Lane Detection - 2
+# 32. Road Lane Detection - 2
 ##### Reference : [https://www.youtube.com/watch?v=yvfI4p6Wyvk](https://www.youtube.com/watch?v=G0cHyaP9HaQ)
 _________________________________________________________________________________________________________________________________________
 ### Aim : To obtain lines inside our ROI.
@@ -1577,9 +1556,7 @@ image_with_lines = drow_the_lines(image, lines)
 plt.imshow(image_with_lines)
 plt.show()
 ```
-33.
-# Aim:
-Build a lane-detection algorithm fuelled entirely by Computer Vision.
+# 33. Build a lane-detection algorithm fuelled entirely by Computer Vision.
 ```python
     import matplotlib.pylab as plt
     import cv2
@@ -1639,9 +1616,7 @@ while cap.isOpened():                            #checks if cap is opened
 cap.release()
 cv2.destroyAllWindows()
 ```
-34.
-#Aim:
-Circle Detection using OpenCV Hough Circle Transform
+# 34. Circle Detection using OpenCV Hough Circle Transform
 
 ```python
 import numpy as np
@@ -1665,8 +1640,7 @@ cv.waitKey(0)
 cv.destroyAllWindows()
 
 ```
-35.
-# Object Detection using Cascade Classifiers
+# 35. Object Detection using Cascade Classifiers
 
 - It is a machine learning based approach where a cascade function is trained from a lot of positive and negative images. It is then used to detect objects in other images.
 
@@ -1718,8 +1692,7 @@ cap.release()
 # Resources
 - Repository for [HaarCascade files](https://github.com/opencv/opencv/tree/master/data/haarcascades)
 - Video lecture on [Face detection and tracking](https://www.youtube.com/watch?v=WfdYYNamHZ8)
-36.
-# Eye Detection in OpenCV
+# 36. Eye Detection in OpenCV
 
 - Similar to face detection, there is a pre-trained cascade classifier for eye detection as well.
 - Here, we first detect the face region and then detect the position of eyes in these regions.
@@ -1755,8 +1728,7 @@ cap.release()
 
 # Resources
 - Repository for [HaarCasacde files](https://github.com/opencv/opencv/tree/master/data/haarcascades)
-37.
-# Detect Corners with Harris Corner Detector
+# 37. Detect Corners with Harris Corner Detector
 Corners- Are the region in image with large intensity variation in all directions. Ths method includes three main steps:
 STEP 1. It determines which windows (small image patches) produce very large variations in intensity when moved in both X and Y directions (i.e. gradients).
 STEP 2. With each such window found, a score R is computed.
@@ -1797,8 +1769,7 @@ cv2.imshow('corner detection', img)
 if cv2.waitKey(0) and 0xff==27:
     cv2.destroyAllWindows()```
 ```
-38.
-# SHI THOMSAI CORNER DETECTION
+# 38. SHI THOMSAI CORNER DETECTION
 
 It is better method than Harris Corner detction method with giving us the option to choose number of corners to be detcted.
 
@@ -1838,7 +1809,7 @@ if cv.waitKey(0) & 0xff == 27:
     cv.destroyAllWindows()
 ```
  
-39.
+# 39.
 
 
 
