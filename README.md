@@ -1269,6 +1269,7 @@ cv2.destroyAllWindows()
 
 ```
 28.
+
 # HOUGH TRANSFORM
 
 Hough Transform is basically a feature extraction technique used in image analysis, computer vision and digital image processing. The aim is to find instances (though imperfect) of objects within a certian class of shapes governed by some sort of voting procedure. 
@@ -1312,5 +1313,532 @@ The polar form is preferred over the cartesian form because of the fact that for
 * [Wikipedia](https://en.wikipedia.org/wiki/Hough_transform)
 * [Youtube Video](https://www.youtube.com/watch?v=7m-RVJ6ABsY&list=PLS1QulWo1RIa7D1O6skqDQ-JZ1GGHKK-K&index=32)
 29.
+
+# Hough Line Transform
+
+## Goal
+
+The aim of this code is to demonstrate the usage of the Hough Line Transform function of the opencv library. The function identifies the lines based on **votes** threshold set by the user. The code results in the display of the infinite length lines obtained by applying the Hough Line function to the given image.
+
+## Requisites
+
+#### Concepts - 
+* [Hough Transform Theory](https://github.com/MananKGarg/SOC_20_Virtual_Keyboard/blob/master/SoC_OpenCV-master/28.%20%5BAnkit%5D%20Hough%20Line%20Transform%20Theory.md) (refer to the given link)
+#### Functions - 
+* [Hough Line Transform](https://docs.opencv.org/2.4/doc/tutorials/imgproc/imgtrans/hough_lines/hough_lines.html) - `cv2.HoughLines(edges, resolution_of_r, resolution_of_theta, min_votes)`
+
+  | Argument              |    Function     |
+  | -------------         | --------------- |
+  | edges                 | The edges detected using Canny Edge Detector or any other technique |
+  | resolution_of_r       | The resolution of the *r* parameter of the line                     |
+  | resolution_of_&theta; | The resolution of the *&theta;* parameter of the line               |
+  | min_votes             | The minimum threshold on the number of votes of the line to be displayed|
+  
+* [Line](https://github.com/MananKGarg/SOC_20_Virtual_Keyboard/blob/master/SoC_OpenCV-master/5.%20%5BPallavi%5D%20Draw%20geometric%20shapes%20on%20images%20using%20Python%20OpenCV.md) (refer to the given link)
+* [Trackbar](https://github.com/MananKGarg/SOC_20_Virtual_Keyboard/blob/master/SoC_OpenCV-master/12.%20(Nirmal)How%20to%20Bind%20Trackbar%20To%20OpenCV%20Windows.md) (refer to the given link)
+
+## Code Insights
+
+* The image is read in the same format as the image and is then converted to Gray scale mode so that the Canny Edge Detection can applied to the image.
+* A trackbar is created to see the effect of the threshold on the lines detected by the Hough Line Function, so that appropriate threshold can be set. 
+* The image is passed to the Hough Line Function and the detected lines are displayed on the image itself.
+* The image is then read and displayed continuously to reflect any changes that happen to the image.
+* To draw the line, we first have to obtain the end points of the line in *(x,y)* form from the *(r, &theta;)* form so that it can be passed an argument to the line function.
+* The lines are then drawn using the line function of the opencv library.
+
+## Code
+
+```python 
+import cv2 as cv 
+import numpy as np 				
+
+def nothing(x):                                                 # A dummy callback function for the Trackbar position change
+	pass                                                    # Do nothing inside the function
+
+img = cv.imread('sudoku.png')                                   # Reading the image and storing it in the variable 'img'
+gray = cv.cvtColor(img, cv.COLOR_BGR2GRAY)                      # Converting the image to grayscale mode
+
+edges = cv.Canny(gray, 50, 150, apertureSize = 3)               # Canny Edge Detection
+cv.imshow('edges', edges)                                       # Display the edges obtained using the above algorithm
+
+cv.namedWindow('image')                                         # Creating a named window 
+cv.createTrackbar('threshold', 'image', 200, 300, nothing)      # Creating a Trackbar with 'threshold' label
+
+while(1):							# To display the image consistently
+	cv.imshow('image', img)					# The generated lines are displayed on the image itself
+	k = cv.waitKey(1)					# Waits for the user to press a key for 1 ms.
+	if k == 27:					        # If 'escape' key is pressed, the loop is terminated
+		break
+	img = cv.imread('sudoku.png')				# The image is read into the img variable
+
+	thresh = cv.getTrackbarPos('threshold', 'image')	# Obtaining the value of the Trackbar
+	lines = cv.HoughLines(edges, 1, np.pi/180, thresh)	# Obtaining the lines using the HoughLines Function
+
+	for line in lines:					# Iterating over the lines obtained
+		rho, theta = line[0]			        # Obtaining the r, theta of the line
+		a = np.cos(theta)				# Evaluating cos theta
+		b = np.sin(theta)				# Evaluating sin theta
+		x0 = a*rho					# Obtaining the perpendicular distant x co-ordinate
+		y0 = b*rho					# Obtaining the perpendicular distant y co-ordinate
+		x1 = int(x0 + 1000*(-b))			# Specifying x co-ordinate of one end of the line 
+		y1 = int(y0 + 1000*a)				# Specifying y co-ordinate of one end of the line
+		x2 = int(x0 + 1000*b)				# Specifying x co-ordinate of the other end of the line
+		y2 = int(y0 + 1000*(-a))			# Specifying y co-ordinate of the other end of the line
+		cv.line(img, (x1,y1), (x2,y2), (0,0,255), 2)	# Drawing the line
+
+cv.destroyAllWindows()						# Closing all the windows and terminate the program
+```
+## References
+
+* [OpenCV Docs](https://docs.opencv.org/3.4/d9/db0/tutorial_hough_lines.html)
+* [Youtube Video](https://www.youtube.com/watch?v=gbL3XKOiBvw&list=PLS1QulWo1RIa7D1O6skqDQ-JZ1GGHKK-K&index=33)
+30.
+
+# Probabilistic Hough Line Transform
+
+## Goal
+
+The aim of this code is to demonstrate the usage of the Probabilistic Hough Line Transform function of the opencv library. The function identifies the lines based on certain parametric thresholds set by the user. The code results in the display of the finite length lines obtained by applying the Probabilistic Hough Line function to the given image.
+
+## Requisites
+
+#### Concepts - 
+* [Hough Transform Theory](https://github.com/MananKGarg/SOC_20_Virtual_Keyboard/blob/master/SoC_OpenCV-master/28.%20%5BAnkit%5D%20Hough%20Line%20Transform%20Theory.md) (refer to the given link)
+
+#### Functions - 
+* [Probabilistic Hough Line Transform](https://docs.opencv.org/2.4/doc/tutorials/imgproc/imgtrans/hough_lines/hough_lines.html) - `cv2.HoughLinesP(edges, resolution_of_r, resolution_of_theta, min_votes, min_length, max_gap)`
+
+  | Argument              |    Function     |
+  | -------------         | --------------- |
+  | edges                 | The edges detected using Canny Edge Detector or any other techniques|
+  | resolution_of_r       | The resolution of the *r* parameter of the line                     |
+  | resolution_of_&theta; | The resolution of the *&theta;* parameter of the line               |
+  | min_votes             | The minimum threshold on the number of votes of line to be detected |
+  | min_length            | Lines shorter than this length are rejected                         |
+  | max_gap               | Allowed distance between two points on a line is max_gap to link them|
+  
+* [Line](https://github.com/MananKGarg/SOC_20_Virtual_Keyboard/blob/master/SoC_OpenCV-master/5.%20%5BPallavi%5D%20Draw%20geometric%20shapes%20on%20images%20using%20Python%20OpenCV.md) (refer to the given link)
+* [Trackbar](https://github.com/MananKGarg/SOC_20_Virtual_Keyboard/blob/master/SoC_OpenCV-master/12.%20(Nirmal)How%20to%20Bind%20Trackbar%20To%20OpenCV%20Windows.md) (refer to the given link)
+
+## Code Insights
+
+* The image is read in the same format as the image and is then converted to Gray scale mode so that the Canny Edge Detection can applied to the image.
+* Two trackbars are made to fine tune the parameteres of min_length and max_gap, so that the desired representation can be obtained.
+* The image is passed to the Probabilistic Hough Line Function and the detected lines are displayed on the image itself.
+* The image is then read and displayed continuously to reflect any changes that happen to the image.
+* The lines are then drawn using the line function of the opencv library.
+
+## Special Note
+
+If carefully observed, the only difference between the codes of Hough Line Transform and Probabilistic Hough Line Transform is that of the function, the rest of the code is exactly the same. The thing is, the standard function draws the lines of inifinte length, whereas the probabilistic model draws lines of finite length. It somehow manages to draw the probable lines present on the image in terms of the terminal points of the line unlike the only *(r, &theta;)* values obtained in the standard model. So, there lies a big difference between the two models.
+
+## Code
+
+```python 
+import cv2 as cv               
+import numpy as np 
+
+def nothing(x):				                # Dummy callback function for the Trckbar position change
+	pass					        # Do nothing inside the function
+img = cv.imread('sudoku.png')		                # Read the image 'sudoku.png' from the directory
+gray = cv.cvtColor(img, cv.COLOR_BGR2GRAY)		# Convert the image to grayscale mode.
+edges = cv.Canny(gray, 50, 150, apertureSize = 3)	# Apply the Canny Edge Detection
+cv.imshow('edges', edges)				# Displays the image on the 'edge' window
+
+cv.namedWindow('image')				        # Create a named window with name 'image'
+
+cv.createTrackbar('min', 'image', 100, 100, nothing)	# Create a trackbar with 'min' label
+cv.createTrackbar('max', 'image', 10, 100, nothing)	# Create a trackbar with 'max' label
+
+while(1):						# To display the image consistently
+	cv.imshow('image', img)			        # Displays the image on the 'image' window
+	k = cv.waitKey(1)				# Waits for the user to press some key
+	if k == 27:					# If 'escape' key is pressed, the loop is terminated
+		break
+	img = cv.imread('sudoku.png')	                # The image is read into the 'img' variable
+
+	m1 = cv.getTrackbarPos('min', 'image')		# The trackbar position of the 'min' label is obtained
+	m2 = cv.getTrackbarPos('max', 'image')		# The trackbar position of the 'max' label is obtained
+	lines = cv.HoughLinesP(edges, 1, np.pi/180, 100,minLineLength  = m1, maxLineGap = m2)	# The probabilistic Hough Lines Function is used.
+
+	for line in lines:				# Iterating over the lines
+		x1,y1,x2,y2 = line[0]			# The extreme co-ordinates of the line are obtained
+		cv.line(img, (x1,y1), (x2,y2), (0,255,0), 2)	# The line is drawn on the image itself
+
+cv.destroyAllWindows()				        # All the windows are destroyed and the program is terminated.
+```
+
+## References 
+
+* [Youtube Video](https://www.youtube.com/watch?v=rVBVqVmHtfc&list=PLS1QulWo1RIa7D1O6skqDQ-JZ1GGHKK-K&index=34)
+* [OpenCV Doc](https://docs.opencv.org/3.4/d9/db0/tutorial_hough_lines.html)
+31.
+# Road Lane Detection - 1
+##### Reference : [https://www.youtube.com/watch?v=yvfI4p6Wyvk](https://www.youtube.com/watch?v=yvfI4p6Wyvk)
+_________________________________________________________________________________________________________________________________________
+### Aim : To narrow our field of view to our Region of Interest (ROI)
+##### Note: In this code, our ROI is the triangular region b/n the center and the two botton vertices of the rectangle. 
+##### New Functions:
+1. `b = np.zeros_like(a)` - Makes b of same shape as a, filled with zeros.
+2. ##### `cv2.fillPoly(img, pts, color)` 
+##### Arguments :
+* img : This is the source image, type - <numpy array>
+* pts : This is the set of vertices of our polygon, type - <list(<tuples>)>
+* color : This is what we want to fill our polygon with. type - <tuple>
+##### Note: While using this function, you **needn't** assign this to some variable, the function modifies the img variable itself.
+#### Code:
+```python
+import matplotlib.pylab as plt
+import cv2
+import numpy as np
+
+image = cv2.imread('road.jpg')                                                      #y'all know what dis does
+image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)                                      #and this too
+
+print(image.shape)                                                  #prints the dimentions of our image array
+height = image.shape[0]                                             #saving height in .... height!!
+width = image.shape[1]                                              #saving width in .... width!!
+
+region_of_interest_vertices = [ (0, height), (width/2, height/2), (width, height) ]
+                                                #we have stored the coordinates of our ROI vertices in a list
+
+def region_of_interest(img, vertices):
+    mask = np.zeros_like(img)                           #array with dimentions of image initialised with zeros 
+    channel_count = img.shape[2]                        #img.shape[2] represents the number of color channels (= 3 here)
+    match_mask_color = (255,) * channel_count           #(255,)*3 returns (255, 255, 255)
+    cv2.fillPoly(mask, vertices, match_mask_color)      #This is explained above
+    masked_image = cv2.bitwise_and(img, mask)           #makes all pixels out of our ROI 0
+    return masked_image
+
+cropped_image = region_of_interest(image, np.array([region_of_interest_vertices], np.int32),)
+                                                #we specify the data type to prevent misunderstandings...
+plt.imshow(cropped_image)
+plt.show()
+```
+_____________________________________________________________________________________________________________________________________
+32.
+# Road Lane Detection - 2
+##### Reference : [https://www.youtube.com/watch?v=yvfI4p6Wyvk](https://www.youtube.com/watch?v=G0cHyaP9HaQ)
+_________________________________________________________________________________________________________________________________________
+### Aim : To obtain lines inside our ROI.
+##### Note: In this code, our ROI is the triangular region b/n the center and the two botton vertices of the rectangle. 
+##### Functions Used:
+1. [Canny edge detector](https://github.com/MananKGarg/SOC_20_Virtual_Keyboard/blob/master/SoC_OpenCV-master/20.%20%20(Aanal)%20Canny%20Edge%20Detection%20in%20OpenCV.md)
+2. [Probabilistic Hough line transform](https://github.com/MananKGarg/SOC_20_Virtual_Keyboard/blob/master/SoC_OpenCV-master/30.%20%5BAnkit%5D%20Probabilistic%20Hough%20Transform%20using%20HoughLinesP.md) 
+3. [Add Weighted](https://github.com/MananKGarg/SOC_20_Virtual_Keyboard/blob/master/SoC_OpenCV-master/10.%20(Aashuraj_Hassani)%20cv.split%2C%20cv.merge%2C%20cv.resize%2C%20cv.add%2C%20cv.addWeighted%2C%20ROI.md)
+
+##### Code:
+```python
+import matplotlib.pylab as plt
+import cv2
+import numpy as np
+
+def region_of_interest(img, vertices):
+    mask = np.zeros_like(img)                                           
+    #channel_count = img.shape[2]
+    match_mask_color = 255                                                         #done in the previous video
+    cv2.fillPoly(mask, vertices, match_mask_color)
+    masked_image = cv2.bitwise_and(img, mask)
+    return masked_image
+
+def drow_the_lines(img, lines):
+    img = np.copy(img)                                                             #copy to protect original image
+    blank_image = np.zeros((img.shape[0], img.shape[1], 3), dtype=np.uint8)        #blank image with same dimentions
+
+    for line in lines:
+        for x1, y1, x2, y2 in line:                                                #coordinates of line ends
+            cv2.line(blank_image, (x1,y1), (x2,y2), (0, 255, 0), thickness=10)     #draw this line
+
+    img = cv2.addWeighted(img, 0.8, blank_image, 1, 0.0)                           #Add this to original to see the lines there
+    return img
+
+image = cv2.imread('road.jpg')
+image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+print(image.shape)
+height = image.shape[0]
+width = image.shape[1]                                                            #Done in the previous video
+region_of_interest_vertices = [
+    (0, height),
+    (width/2, height/2),
+    (width, height)
+]
+gray_image = cv2.cvtColor(image, cv2.COLOR_RGB2GRAY)
+canny_image = cv2.Canny(gray_image, 100, 200)
+cropped_image = region_of_interest(canny_image,
+                np.array([region_of_interest_vertices], np.int32),)
+lines = cv2.HoughLinesP(cropped_image,                                           #lines has our coordinates as a nested list
+                        rho=6,
+                        theta=np.pi/180,
+                        threshold=160,
+                        lines=np.array([]),
+                        minLineLength=40,
+                        maxLineGap=25)
+image_with_lines = drow_the_lines(image, lines)
+plt.imshow(image_with_lines)
+plt.show()
+```
+33.
+# Aim:
+Build a lane-detection algorithm fuelled entirely by Computer Vision.
+```python
+    import matplotlib.pylab as plt
+    import cv2
+    import numpy as np
+
+def region_of_interest(img, vertices):
+    mask = np.zeros_like(img)
+    #channel_count = img.shape[2]
+    match_mask_color = 255
+    cv2.fillPoly(mask, vertices, match_mask_color)
+    masked_image = cv2.bitwise_and(img, mask)
+    return masked_image
+
+def drow_the_lines(img, lines):
+    img = np.copy(img)
+    blank_image = np.zeros((img.shape[0], img.shape[1], 3), dtype=np.uint8)
+    
+    for line in lines:
+        for x1, y1, x2, y2 in line:
+            cv2.line(blank_image, (x1,y1), (x2,y2), (0, 255, 0), thickness=10)  
+       
+    img = cv2.addWeighted(img, 0.8, blank_image, 1, 0.0)
+    return img
+
+def process(image):                                      #This function overwrites a frame with the the detected lines
+    print(image.shape)
+    height = image.shape[0]
+    width = image.shape[1]
+    region_of_interest_vertices = [
+        (0, height),
+        (width/2, height/2),
+        (width, height)
+    ]
+    gray_image = cv2.cvtColor(image, cv2.COLOR_RGB2GRAY)
+    canny_image = cv2.Canny(gray_image, 100, 120)        # canny parameters altered for better output quality
+    cropped_image = region_of_interest(canny_image,
+                    np.array([region_of_interest_vertices], np.int32),)
+    lines = cv2.HoughLinesP(cropped_image,
+                            rho=2,
+                            theta=np.pi/180,
+                            threshold=50,                 #parameters altered for better output quality
+                            lines=np.array([]),
+                            minLineLength=40,
+                            maxLineGap=100)
+    image_with_lines = drow_the_lines(image, lines)
+    return image_with_lines
+
+cap = cv2.VideoCapture('test.mp4')              # Video Capture with its parameter as the test video
+
+while cap.isOpened():                            #checks if cap is opened
+    ret, frame = cap.read()                      #reading the frame
+    frame = process(frame)                       # overwriting frame with the frame with lane lines
+    cv2.imshow('frame', frame)
+    if cv2.waitKey(1) & 0xFF == ord('q'):        #exits if user presses 'q'
+        break
+
+cap.release()
+cv2.destroyAllWindows()
+```
+34.
+#Aim:
+Circle Detection using OpenCV Hough Circle Transform
+
+```python
+import numpy as np
+import cv2 as cv
+img = cv.imread('smarties.png')                                   # reads image
+output = img.copy()                         
+gray = cv.cvtColor(img, cv.COLOR_BGR2GRAY)
+gray = cv.medianBlur(gray, 5)                                    #blurring image because hough circle method works better with blur images
+circles = cv.HoughCircles(gray, cv.HOUGH_GRADIENT, 1, 20,
+                          param1=50, param2=30, minRadius=0, maxRadius=0)
+                #HoughCircles has a few parameters (img,detection method,dp,min_dist,parameter1,parameter2,minRadius,maxRadius)
+                          
+detected_circles = np.uint16(np.around(circles))          #integer conversion of x,y,radius
+for (x, y ,r) in detected_circles[0, :]:
+    cv.circle(output, (x, y), r, (0, 0, 0), 3)            #marks the boundary of the detected circles
+    cv.circle(output, (x, y), 2, (0, 255, 255), 3)        #marks the center of the circles by making a very small circle at the center
+
+
+cv.imshow('output',output)
+cv.waitKey(0)
+cv.destroyAllWindows()
+
+```
+35.
+# Object Detection using Cascade Classifiers
+
+- It is a machine learning based approach where a cascade function is trained from a lot of positive and negative images. It is then used to detect objects in other images.
+
+- Before extracting features, the algorithm needs a lot of positive images and negative images to train the classifier. For this, Haar features are used. A Haar feature considers adjacent rectangular regions at a specific location in a detection window, sums up the pixel intensities in each region and calculates the difference between these sums.  
+
+- Instead of repeating this for each & every pixel, an integral image is used. However large your image, it reduces the calculations for a given pixel to an operation involving just four pixels.
+
+- Most of the calculated features are irrelevant. So, to select the best features, we apply each & every feature on all the training images. Each image is given an equal weight in the beginning. After each classification, weights of misclassified images are increased. Then the same process is done. New error rates & weights are calculated. The process is continued until the required accuracy or error rate is achieved or the required number of features are found.
+
+- The final classifier is a weighted sum of these weak classifiers. The paper says even 200 features provide detection with 95% accuracy. Their final setup had around 6000 features.
+
+- In an image, most of the image is non-face region. If it is not a face region, discard it in a single shot and focus on regions where there can be a face. This way, we spend more time checking possible face regions.
+
+- For this they introduced the concept of Cascade of Classifiers. Instead of applying all 6000 features on a window, the features are grouped into different stages of classifiers and applied one-by-one. If a window fails the first stage, discard it. If it passes, apply the second stage of features and continue the process. The window which passes all stages is a face region.
+
+# OpenCV for Object Detection
+* OpenCV comes with a trainer as well as a detector.For the face classifier, the cascade function takes an grayscale image as an input and gives the location & size of face as output
+* ` objects = cv2.CascadeClassifier.detectMultiScale(image, scaleFactor, minNeighbors) `
+   | Keyword | Specification |
+   | ------- | --------------|
+   |objects| Vector of rectangles where each rectangle contains the detected object, the rectangles may be partially outside the original image.|
+   |image | Matrix of the type CV_8U containing an image where objects are detected.|
+   |scaleFactor| Parameter specifying how much the image size is reduced at each image scale|
+   |minNeighbors| Parameter specifying how many neighbors each candidate rectangle should have to retain it.|
+   
+# Code
+```python
+import cv2
+                                                                            
+face_cascade = cv2.CascadeClassifier('haarcascade_frontalface_default.xml') # Defining an object for the face classifier
+cap = cv2.VideoCapture('test.mp4')                                          # Add the location of video file here
+
+while cap.isOpened():
+    _, img = cap.read()
+ 
+    gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)                            # The classifier needs a grayscale image
+    faces = face_cascade.detectMultiScale(gray, 1.1, 4)                     # Gives the list of tuples containing location & size of faces
+
+    for (x, y , w ,h) in faces:                                             # (x, y): Position of Face
+        cv2.rectangle(img, (x,y), (x+w, y+h), (255, 0 , 0), 3)              # (w, h): Width & Height of Face
+                                                                            # Draws rectangle around face(s)
+    # Display the output
+    cv2.imshow('img', img)
+    if cv2.waitKey(1) & 0xFF == ord('q'):
+        break
+
+cap.release()
+```
+# Resources
+- Repository for [HaarCascade files](https://github.com/opencv/opencv/tree/master/data/haarcascades)
+- Video lecture on [Face detection and tracking](https://www.youtube.com/watch?v=WfdYYNamHZ8)
+36.
+# Eye Detection in OpenCV
+
+- Similar to face detection, there is a pre-trained cascade classifier for eye detection as well.
+- Here, we first detect the face region and then detect the position of eyes in these regions.
+
+# Code
+```python
+import cv2
+
+face_cascade = cv2.CascadeClassifier('haarcascade_frontalface_default.xml')  # Define object for face classifier
+eye_cascade = cv2.CascadeClassifier('haarcascade_eye_tree_eyeglasses.xml')   # Define object for eye classifier
+cap = cv2.VideoCapture('test.mp4')                                           # Add the location for video file here
+
+while cap.isOpened():
+    _, img = cap.read()
+    gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+    faces = face_cascade.detectMultiScale(gray, 1.1, 4)                      # Gives the list of tuples containing location & size of faces
+
+    for (x, y , w ,h) in faces:
+        cv2.rectangle(img, (x,y), (x+w, y+h), (255, 0 , 0), 3)               # Draws rectangle around face(s)
+        roi_gray = gray[y:y+h, x:x+w]                                        # Region of image containing face in grayscale
+        roi_color = img[y:y+h, x:x+w]                                        # Region of image containing face in color
+        eyes = eye_cascade.detectMultiScale(roi_gray)                        # Gives the list of tuples containing location & size of eyes
+        for (ex, ey ,ew, eh) in eyes:                                        # (ex, ey): Upperleft corner of eye-rectangle
+            cv2.rectangle(roi_color, (ex,ey), (ex+ew, ey+eh), (0, 255, 0), 5)# (ew, eh): Width & Height of eye
+                                                                             # Draws rectangle around eyes
+    # Display the output
+    cv2.imshow('img', img)
+    if cv2.waitKey(1) & 0xFF == ord('q'):
+        break
+
+cap.release()
+```
+
+# Resources
+- Repository for [HaarCasacde files](https://github.com/opencv/opencv/tree/master/data/haarcascades)
+37.
+# Detect Corners with Harris Corner Detector
+Corners- Are the region in image with large intensity variation in all directions. Ths method includes three main steps:
+STEP 1. It determines which windows (small image patches) produce very large variations in intensity when moved in both X and Y directions (i.e. gradients).
+STEP 2. With each such window found, a score R is computed.
+STEP 3. After applying a threshold to this score, important corners are selected & marked.
+
+### Mathematical overview
+STEP 1 :How do we determine windows which produce large variations?
+Let a window (the center) be located at position (x,y). Let the intensity of the pixel at this location be I(x,y). If this window slightly shifts to a new location with displacement (u,v), the intensity of the pixel at this location will be I(x+u,y+v). Hence [I(x+u,y+v)-I(x,y)] will be the difference in intensities of the window shift. For a corner, this difference will be very high. Hence, we maximize this term by differentiating it with respect to the X and Y axes. Let w(x,y) be the weights of pixels over a window (Rectangular or a Gaussian) Then, E(u,v) is defined as :
+
+   ![](https://miro.medium.com/max/810/0*v4pgxvEFE8JvroJv.png)
+    
+Weighted sum multiplied by the intensity difference for all pixels in a window.
+Now, computing E(u,v) by the above formula will be really, really slow. Hence, we use Taylor series expansion (only the 1rst order).
+
+![](https://miro.medium.com/max/1400/1*2f_Yy0iYm62xfJItAte-CQ.png)
+
+STEP 2: Now that we know how to find windows with large variations, how do we select the ones with suitable corners? It was estimated that the eigenvalues of the matrix can be used to do this. Thus, we calculate a score associated with each such window.
+
+![](https://miro.medium.com/max/283/0*oahBtth2YSWxNa-Z.png)
+
+![Score for classifying into flat region/edge/corner.](https://miro.medium.com/max/1400/1*tKBvNLJ22UBzWm9JWcB3Tg.png)
+
+STEP 3: Depending on the value of R, the window is classified as consisting of flat, edge, or a corner.(Finally 😛) A large value of R indicates a corner, a negative value indicates an edge. Also, to pick up the optimal corners, we can use non-maximum suppression.
+
+```Python
+import numpy as np
+import cv2
+img = cv2.imread("crossboard.jpg") 
+cv2.imshow('image', img)
+img_gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY) #Built-in function for harris detector takes gray scale image (in float32) and grayscale also gives better results. 
+img_gray = np.float32(img_gray)
+dst = cv2.cornerHarris(img_gray, 2, 3, 0.04) #second parameter is block-size that is window-size is block_size square. third parameter is ksize that is the aperture size used for Sobel (used in step 1) and fourth is k which is harris free parameter in the equation. 
+dst = cv2.dilate(dst, None) # dilate to get better results.
+
+img[dst>0.01*dst.max()] = [0, 0, 255] #revert back to old image and mark the corners.
+cv2.imshow('corner detection', img)
+
+if cv2.waitKey(0) and 0xff==27:
+    cv2.destroyAllWindows()```
+```
+38.
+# SHI THOMSAI CORNER DETECTION
+
+It is better method than Harris Corner detction method with giving us the option to choose number of corners to be detcted.
+
+```python
+import numpy as np
+import cv2 as cv
+
+#reading the image argument passed is the name of the image file to be read
+img = cv.imread('pic1.png')
+
+# Coverting image to grayscale as cv2.goodfeaturesToTrack takes grayscale image as an input.
+# cv2.cvtColor can be used for converting from one color format to another like BGR2RGB, BGR2GRAY, BGR2HSV
+gray = cv.cvtColor(img, cv.COLOR_BGR2GRAY)
+
+# Function which uses Shi Thomasi Corner Detction method
+# It takes no. of arguments first the grayscale image, second number of corners you want to detect
+# third quality which decides that it is corner or not (preferable 0.01)
+# fourth minimum Euclidean distance between the detected corners
+corners = cv.goodFeaturesToTrack(gray, 100, 0.01, 10)
+
+# used to convert into 64 bit int
+corners = np.int0(corners)
+
+for i in corners:
+     
+    # ravel methods return contingous 1D array if it is 2D or 3D array
+    x, y = i.ravel()        
+    
+    # To draw circle on the image
+    # arguments passed are (source image, centre of circle in form of tuple, radius of circle, color in BGR format, thickness use negative to fill the circle)
+    cv.circle(img, (x, y), 3, [255, 255, 0], -1)
+
+# Shows the image to the user with first argument name of the window and second image source
+cv.imshow('Shi-Tomasi Corner Detector', img)
+
+if cv.waitKey(0) & 0xff == 27:
+    cv.destroyAllWindows()
+```
+ 
+39.
+
 
 
